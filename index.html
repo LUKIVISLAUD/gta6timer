@@ -1,15 +1,8 @@
+<!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>GTA 6 Countdown</title>
-
-  <!-- Favicony -->
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="manifest" href="site.webmanifest" />
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-
   <style>
     html, body {
       margin: 0;
@@ -20,6 +13,7 @@
       background-color: black;
     }
 
+    /* Tło */
     body {
       display: flex;
       flex-direction: column;
@@ -43,9 +37,10 @@
       }
     }
 
+    /* Animacja logo */
     .logo {
       position: relative;
-      top: -15vh; /* Zmieniliśmy z px na vh dla lepszego dopasowania */
+      top: -270px;
       width: 500px;
       max-width: 90%;
       animation: fadeInLogo 5s ease-in-out forwards;
@@ -63,6 +58,7 @@
       }
     }
 
+    /* Animacja timera */
     .timer {
       font-size: 3rem;
       margin-top: 50px;
@@ -87,40 +83,12 @@
       }
     }
 
-    /* Media Queries */
-    /* Na telefonach (mniejsze ekrany) */
-    @media screen and (max-width: 768px) {
-      .logo {
-        top: -5vh; /* Przesunięcie logo wyżej na telefonach */
-        width: 80%;
-      }
-
-      .timer {
-        font-size: 2rem;
-        margin-top: 20px;
-        padding: 20px 30px;
-      }
-    }
-
-    @media screen and (max-width: 480px) {
-      .logo {
-        top: -3vh; /* Jeszcze wyżej na bardzo małych ekranach */
-        width: 90%;
-      }
-
-      .timer {
-        font-size: 1.5rem;
-        margin-top: 10px;
-        padding: 15px 20px;
-      }
-    }
-
   </style>
 </head>
 <body>
 
   <!-- Logo -->
-  <img src="gta-6-logo-official-artwork-1600.jpg" alt="GTA 6 Logo" class="logo" />
+  <img src="gta-6-logo-official-artwork-1600.jpg" alt="GTA 6 Logo" class="logo">
 
   <!-- Timer -->
   <div class="timer" id="countdown">
@@ -145,7 +113,9 @@
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
       const seconds = Math.floor((diff / 1000) % 60);
 
-      countdownElement.innerHTML = ${days} dni ${hours}h ${minutes}min ${seconds}s;
+      countdownElement.innerHTML = `
+        ${days} dni ${hours}h ${minutes}min ${seconds}s
+      `;
     }
 
     updateCountdown();
