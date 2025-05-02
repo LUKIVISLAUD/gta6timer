@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>GTA 6 Countdown</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+      background-color: black;
+      animation: fadeIn 1s ease-in-out; /* Cała strona zyskuje animację */
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    body {
+      background: url('gta-6-official-artwork-no-logo-1600.jpg') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-shadow: 2px 2px 8px #000;
+    }
+
+    .logo {
+      position: relative;
+      top: -270px; /* Ustalamy logo 450px od góry */
+      width: 500px; /* Większe logo */
+      max-width: 90%;
+      animation: fadeInLogo 5s ease-in-out forwards; /* Animacja dla logo */
+      opacity: 0;
+    }
+
+    @keyframes fadeInLogo {
+      0% {
+        opacity: 0;
+        transform: scale(0.6);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .timer {
+      font-size: 3rem; /* Zwiększony rozmiar czcionki dla lepszej widoczności */
+      margin-top: 50px; /* Większy margines, żeby timer był nieco niżej */
+      background: rgba(0, 0, 0, 0.7); /* Mniej przezroczystości, bardziej widoczny */
+      padding: 30px 50px; /* Większe paddingi, żeby timer wyglądał na bardziej przestronny */
+      border-radius: 15px; /* Zaokrąglone rogi */
+      animation: fadeInTimer 5s ease-in-out forwards; /* Animacja dla timera */
+      opacity: 0;
+      color: #fff; /* Jasny kolor tekstu */
+      text-shadow: 0 0 8px rgba(138, 43, 226, 0.8), 0 0 15px rgba(138, 43, 226, 0.6); /* Fioletowa poświata */
+      box-shadow: 0 0 12px rgba(138, 43, 226, 0.5); /* Subtelna obramówka */
+    }
+
+    @keyframes fadeInTimer {
+      0% {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <img src="gta-6-logo-official-artwork-1600.jpg" alt="GTA 6 Logo" class="logo">
+
+  <div class="timer" id="countdown">
+    Odliczanie...
+  </div>
+
+  <script>
+    const countdownElement = document.getElementById('countdown');
+    const targetDate = new Date("2026-05-26T00:00:00");
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        countdownElement.innerHTML = "GTA 6 JUŻ TU JEST!";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      countdownElement.innerHTML = `
+        ${days} dni ${hours}h ${minutes}min ${seconds}s
+      `;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+
+</body>
+</html>
