@@ -11,34 +11,39 @@
       font-family: 'Arial', sans-serif;
       overflow: hidden;
       background-color: black;
-      animation: fadeIn 1s ease-in-out; /* Cała strona zyskuje animację */
     }
 
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-
+    /* Tło */
     body {
-      background: url('gta-6-official-artwork-no-logo-1600.jpg') no-repeat center center/cover;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       color: white;
       text-shadow: 2px 2px 8px #000;
+      position: relative;
+      background: url('gta-6-official-artwork-no-logo-1600.jpg') no-repeat center center/cover;
+      background-size: cover;
+      height: 100vh;
+      animation: zoomOut 5s ease-out forwards;
     }
 
+    @keyframes zoomOut {
+      0% {
+        transform: scale(1.3);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    /* Animacja logo */
     .logo {
       position: relative;
-      top: -270px; /* Ustalamy logo 450px od góry */
-      width: 500px; /* Większe logo */
+      top: -270px;
+      width: 500px;
       max-width: 90%;
-      animation: fadeInLogo 5s ease-in-out forwards; /* Animacja dla logo */
+      animation: fadeInLogo 5s ease-in-out forwards;
       opacity: 0;
     }
 
@@ -53,17 +58,18 @@
       }
     }
 
+    /* Animacja timera */
     .timer {
-      font-size: 3rem; /* Zwiększony rozmiar czcionki dla lepszej widoczności */
-      margin-top: 50px; /* Większy margines, żeby timer był nieco niżej */
-      background: rgba(0, 0, 0, 0.7); /* Mniej przezroczystości, bardziej widoczny */
-      padding: 30px 50px; /* Większe paddingi, żeby timer wyglądał na bardziej przestronny */
-      border-radius: 15px; /* Zaokrąglone rogi */
-      animation: fadeInTimer 5s ease-in-out forwards; /* Animacja dla timera */
+      font-size: 3rem;
+      margin-top: 50px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 30px 50px;
+      border-radius: 15px;
+      animation: fadeInTimer 5s ease-in-out forwards;
       opacity: 0;
-      color: #fff; /* Jasny kolor tekstu */
-      text-shadow: 0 0 8px rgba(138, 43, 226, 0.8), 0 0 15px rgba(138, 43, 226, 0.6); /* Fioletowa poświata */
-      box-shadow: 0 0 12px rgba(138, 43, 226, 0.5); /* Subtelna obramówka */
+      color: #fff;
+      text-shadow: 0 0 8px rgba(138, 43, 226, 0.8), 0 0 15px rgba(138, 43, 226, 0.6);
+      box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
     }
 
     @keyframes fadeInTimer {
@@ -76,12 +82,15 @@
         transform: scale(1);
       }
     }
+
   </style>
 </head>
 <body>
 
+  <!-- Logo -->
   <img src="gta-6-logo-official-artwork-1600.jpg" alt="GTA 6 Logo" class="logo">
 
+  <!-- Timer -->
   <div class="timer" id="countdown">
     Odliczanie...
   </div>
