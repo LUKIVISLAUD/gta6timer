@@ -46,7 +46,7 @@
 
     .logo {
       position: relative;
-      top: -270px; /* To ustawienie było wcześniej */
+      margin-top: -100px; /* Zmieniamy na margin-top */
       width: 500px;
       max-width: 90%;
       animation: fadeInLogo 5s ease-in-out forwards;
@@ -89,10 +89,9 @@
     }
 
     /* Media Queries */
-    /* Na telefonach (mniejsze ekrany) */
     @media screen and (max-width: 768px) {
       .logo {
-        top: -400px; /* Przesunięcie logo wyżej na telefonach */
+        margin-top: -250px; /* Zwiększamy przesunięcie na telefonach */
         width: 80%;
       }
 
@@ -105,7 +104,7 @@
 
     @media screen and (max-width: 480px) {
       .logo {
-        top: -300px; /* Jeszcze wyżej na mniejszych ekranach */
+        margin-top: -200px; /* Jeszcze wyżej na mniejszych ekranach */
         width: 90%;
       }
 
