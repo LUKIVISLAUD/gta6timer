@@ -17,7 +17,7 @@
       padding: 0;
       height: 100%;
       font-family: 'Arial', sans-serif;
-      overflow: auto; /* Zezwala na przewijanie */
+      overflow: hidden;
       background-color: black;
     }
 
@@ -92,7 +92,7 @@
     /* Na telefonach (mniejsze ekrany) */
     @media screen and (max-width: 768px) {
       .logo {
-        top: -600px; /* Zwiększamy przesunięcie na telefonach */
+        top: -300px; /* Większa wartość, logo wyżej na telefonach */
         width: 80%;
       }
 
@@ -105,7 +105,7 @@
 
     @media screen and (max-width: 480px) {
       .logo {
-        top: -400px; /* Jeszcze bardziej wyżej na mniejszych ekranach */
+        top: -200px; /* Jeszcze wyżej na mniejszych ekranach */
         width: 90%;
       }
 
