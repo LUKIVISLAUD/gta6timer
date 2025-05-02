@@ -45,22 +45,21 @@
     }
 
     .logo {
-      position: relative;
-      top: -15vh; /* PC: standardowe pozycjonowanie */
       width: 500px;
       max-width: 90%;
       animation: fadeInLogo 5s ease-in-out forwards;
       opacity: 0;
+      transform: translateY(-15vh); /* zamiast top */
     }
 
     @keyframes fadeInLogo {
       0% {
         opacity: 0;
-        transform: scale(0.6);
+        transform: scale(0.6) translateY(-15vh);
       }
       100% {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1) translateY(-15vh);
       }
     }
 
@@ -91,8 +90,19 @@
     /* Media Queries */
     @media screen and (max-width: 768px) {
       .logo {
-        top: -25vh; /* Logo wyżej na telefonie */
+        transform: translateY(-30vh); /* mocniej do góry na tel */
         width: 80%;
+      }
+
+      @keyframes fadeInLogo {
+        0% {
+          opacity: 0;
+          transform: scale(0.6) translateY(-30vh);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1) translateY(-30vh);
+        }
       }
 
       .timer {
@@ -104,8 +114,19 @@
 
     @media screen and (max-width: 480px) {
       .logo {
-        top: -30vh; /* Jeszcze wyżej na małych ekranach */
+        transform: translateY(-35vh);
         width: 90%;
+      }
+
+      @keyframes fadeInLogo {
+        0% {
+          opacity: 0;
+          transform: scale(0.6) translateY(-35vh);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1) translateY(-35vh);
+        }
       }
 
       .timer {
