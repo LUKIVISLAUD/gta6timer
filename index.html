@@ -2,18 +2,15 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GTA 6 Countdown</title>
-  
-  <!-- Favicon i Ikony -->
+
+  <!-- Ikony -->
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
-  
+  <link rel="shortcut icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="icon" sizes="192x192" href="android-chrome-192x192.png">
-  <link rel="icon" sizes="512x512" href="android-chrome-512x512.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
 
   <style>
     html, body {
@@ -25,7 +22,6 @@
       background-color: black;
     }
 
-    /* Tło */
     body {
       display: flex;
       flex-direction: column;
@@ -49,14 +45,12 @@
       }
     }
 
-    /* Animacja logo */
     .logo {
-      position: relative;
-      top: -270px;
       width: 500px;
       max-width: 90%;
       animation: fadeInLogo 5s ease-in-out forwards;
       opacity: 0;
+      margin-top: -150px; /* Domyślnie na PC */
     }
 
     @keyframes fadeInLogo {
@@ -70,7 +64,6 @@
       }
     }
 
-    /* Animacja timera */
     .timer {
       font-size: 3rem;
       margin-top: 50px;
@@ -95,10 +88,10 @@
       }
     }
 
-    /* Media Query dla ekranów poniżej 768px (np. telefony w pionie) */
+    /* Responsywność */
     @media screen and (max-width: 768px) {
       .logo {
-        top: -150px; /* Podniesienie logo wyżej na telefonach */
+        margin-top: -50px;
         width: 80%;
       }
 
@@ -109,10 +102,9 @@
       }
     }
 
-    /* Media Query dla ekranów poniżej 480px (np. małe telefony) */
     @media screen and (max-width: 480px) {
       .logo {
-        top: -120px; /* Dalsze podniesienie logo na jeszcze mniejszych ekranach */
+        margin-top: -20px;
         width: 90%;
       }
 
@@ -122,7 +114,6 @@
         padding: 15px 20px;
       }
     }
-
   </style>
 </head>
 <body>
