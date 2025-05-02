@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
@@ -46,7 +45,7 @@
 
     .logo {
       position: relative;
-      top: -15vh; /* PC: dokładnie jak było */
+      top: -15vh; /* Zmieniliśmy z px na vh dla lepszego dopasowania */
       width: 500px;
       max-width: 90%;
       animation: fadeInLogo 5s ease-in-out forwards;
@@ -88,10 +87,11 @@
       }
     }
 
-    /* MEDIA QUERIES — TELEFONY */
+    /* Media Queries */
+    /* Na telefonach (mniejsze ekrany) */
     @media screen and (max-width: 768px) {
       .logo {
-        top: -75vh; /* MOCNO wyżej na telefonie */
+        top: -5vh; /* Przesunięcie logo wyżej na telefonach */
         width: 80%;
       }
 
@@ -104,7 +104,7 @@
 
     @media screen and (max-width: 480px) {
       .logo {
-        top: -85vh; /* JESZCZE WYŻEJ na bardzo małych ekranach */
+        top: -3vh; /* Jeszcze wyżej na bardzo małych ekranach */
         width: 90%;
       }
 
@@ -145,7 +145,7 @@
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
       const seconds = Math.floor((diff / 1000) % 60);
 
-      countdownElement.innerHTML = `${days} dni ${hours}h ${minutes}min ${seconds}s`;
+      countdownElement.innerHTML = ${days} dni ${hours}h ${minutes}min ${seconds}s;
     }
 
     updateCountdown();
