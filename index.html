@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GTA 6 Countdown</title>
-
-  <!-- Favicony -->
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="manifest" href="site.webmanifest" />
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  
+  <!-- Favicon i Ikony -->
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+  
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" sizes="192x192" href="android-chrome-192x192.png">
+  <link rel="icon" sizes="512x512" href="android-chrome-512x512.png">
 
   <style>
     html, body {
@@ -21,6 +25,7 @@
       background-color: black;
     }
 
+    /* Tło */
     body {
       display: flex;
       flex-direction: column;
@@ -44,12 +49,14 @@
       }
     }
 
+    /* Animacja logo */
     .logo {
+      position: relative;
+      top: -270px;
       width: 500px;
       max-width: 90%;
       animation: fadeInLogo 5s ease-in-out forwards;
       opacity: 0;
-      margin-top: -150px; /* PC */
     }
 
     @keyframes fadeInLogo {
@@ -63,6 +70,7 @@
       }
     }
 
+    /* Animacja timera */
     .timer {
       font-size: 3rem;
       margin-top: 50px;
@@ -87,10 +95,10 @@
       }
     }
 
-    /* Media Queries */
+    /* Media Query dla ekranów poniżej 768px (np. telefony w pionie) */
     @media screen and (max-width: 768px) {
       .logo {
-        margin-top: -300px; /* Wyżej na telefonach */
+        top: -150px; /* Podniesienie logo wyżej na telefonach */
         width: 80%;
       }
 
@@ -101,9 +109,10 @@
       }
     }
 
+    /* Media Query dla ekranów poniżej 480px (np. małe telefony) */
     @media screen and (max-width: 480px) {
       .logo {
-        margin-top: -340px; /* Jeszcze wyżej na małych ekranach */
+        top: -120px; /* Dalsze podniesienie logo na jeszcze mniejszych ekranach */
         width: 90%;
       }
 
@@ -113,12 +122,13 @@
         padding: 15px 20px;
       }
     }
+
   </style>
 </head>
 <body>
 
   <!-- Logo -->
-  <img src="gta-6-logo-official-artwork-1600.jpg" alt="GTA 6 Logo" class="logo" />
+  <img src="gta-6-logo-official-artwork-1600.jpg" alt="GTA 6 Logo" class="logo">
 
   <!-- Timer -->
   <div class="timer" id="countdown">
@@ -143,7 +153,9 @@
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
       const seconds = Math.floor((diff / 1000) % 60);
 
-      countdownElement.innerHTML = `${days} dni ${hours}h ${minutes}min ${seconds}s`;
+      countdownElement.innerHTML = `
+        ${days} dni ${hours}h ${minutes}min ${seconds}s
+      `;
     }
 
     updateCountdown();
