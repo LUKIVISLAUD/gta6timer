@@ -10,7 +10,6 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
   <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
-  
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="icon" sizes="192x192" href="android-chrome-192x192.png">
   <link rel="icon" sizes="512x512" href="android-chrome-512x512.png">
@@ -25,7 +24,6 @@
       background-color: black;
     }
 
-    /* Tło */
     body {
       display: flex;
       flex-direction: column;
@@ -38,6 +36,8 @@
       background-size: cover;
       height: 100vh;
       animation: zoomOut 5s ease-out forwards;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     @keyframes zoomOut {
@@ -49,14 +49,12 @@
       }
     }
 
-    /* Animacja logo */
     .logo {
-      position: relative;
-      top: -270px;
       width: 500px;
       max-width: 90%;
       animation: fadeInLogo 5s ease-in-out forwards;
       opacity: 0;
+      margin-bottom: 30px;
     }
 
     @keyframes fadeInLogo {
@@ -70,10 +68,8 @@
       }
     }
 
-    /* Animacja timera */
     .timer {
       font-size: 3rem;
-      margin-top: 50px;
       background: rgba(0, 0, 0, 0.7);
       padding: 30px 50px;
       border-radius: 15px;
@@ -95,34 +91,29 @@
       }
     }
 
-    /* Media Query dla ekranów poniżej 768px (np. telefony w pionie) */
     @media screen and (max-width: 768px) {
       .logo {
-        top: -150px; /* Podniesienie logo wyżej na telefonach */
         width: 80%;
+        margin-bottom: 20px;
       }
 
       .timer {
         font-size: 2rem;
-        margin-top: 20px;
         padding: 20px 30px;
       }
     }
 
-    /* Media Query dla ekranów poniżej 480px (np. małe telefony) */
     @media screen and (max-width: 480px) {
       .logo {
-        top: -120px; /* Dalsze podniesienie logo na jeszcze mniejszych ekranach */
         width: 90%;
+        margin-bottom: 15px;
       }
 
       .timer {
         font-size: 1.5rem;
-        margin-top: 10px;
         padding: 15px 20px;
       }
     }
-
   </style>
 </head>
 <body>
