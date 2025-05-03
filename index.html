@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GTA 6 Countdown</title>
-  
+
   <!-- Favicon i Ikony -->
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="icon" sizes="192x192" href="android-chrome-192x192.png">
-  <link rel="icon" sizes="512x512" href="android-chrome-512x512.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="icon" sizes="192x192" href="android-chrome-192x192.png" />
+  <link rel="icon" sizes="512x512" href="android-chrome-512x512.png" />
 
   <style>
     html, body {
@@ -26,18 +26,10 @@
 
     body {
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      color: white;
-      text-shadow: 2px 2px 8px #000;
-      position: relative;
+      align-items: center;
       background: url('gta-6-official-artwork-no-logo-1600.jpg') no-repeat center center/cover;
-      background-size: cover;
-      height: 100vh;
       animation: zoomOut 5s ease-out forwards;
-      padding: 20px;
-      box-sizing: border-box;
     }
 
     @keyframes zoomOut {
@@ -49,12 +41,19 @@
       }
     }
 
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5vh;
+      text-align: center;
+    }
+
     .logo {
       width: 500px;
       max-width: 90%;
       animation: fadeInLogo 5s ease-in-out forwards;
       opacity: 0;
-      margin-bottom: 30px;
     }
 
     @keyframes fadeInLogo {
@@ -94,9 +93,7 @@
     @media screen and (max-width: 768px) {
       .logo {
         width: 80%;
-        margin-bottom: 20px;
       }
-
       .timer {
         font-size: 2rem;
         padding: 20px 30px;
@@ -106,9 +103,7 @@
     @media screen and (max-width: 480px) {
       .logo {
         width: 90%;
-        margin-bottom: 15px;
       }
-
       .timer {
         font-size: 1.5rem;
         padding: 15px 20px;
@@ -118,12 +113,9 @@
 </head>
 <body>
 
-  <!-- Logo -->
-  <img src="gta-6-logo-official-artwork-1600.jpg" alt="GTA 6 Logo" class="logo">
-
-  <!-- Timer -->
-  <div class="timer" id="countdown">
-    Odliczanie...
+  <div class="wrapper">
+    <img src="gta-6-logo-official-artwork-1600.jpg" alt="GTA 6 Logo" class="logo" />
+    <div class="timer" id="countdown">Odliczanie...</div>
   </div>
 
   <script>
@@ -144,9 +136,7 @@
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
       const seconds = Math.floor((diff / 1000) % 60);
 
-      countdownElement.innerHTML = `
-        ${days} dni ${hours}h ${minutes}min ${seconds}s
-      `;
+      countdownElement.innerHTML = `${days} dni ${hours}h ${minutes}min ${seconds}s`;
     }
 
     updateCountdown();
