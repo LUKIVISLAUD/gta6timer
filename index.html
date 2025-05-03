@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GTA 6 Countdown</title>
 
-  <!-- Favicon i Ikony -->
+  <!-- Ikony -->
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png" />
@@ -27,7 +27,7 @@
     body {
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       background: url('gta-6-official-artwork-no-logo-1600.jpg') no-repeat center center/cover;
       animation: zoomOut 5s ease-out forwards;
     }
@@ -45,8 +45,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5vh;
-      text-align: center;
+      width: 100%;
+      margin-top: 8vh; /* PODNOSIMY CAŁOŚĆ NA GÓRZE */
     }
 
     .logo {
@@ -69,6 +69,7 @@
 
     .timer {
       font-size: 3rem;
+      margin-top: 40px;
       background: rgba(0, 0, 0, 0.7);
       padding: 30px 50px;
       border-radius: 15px;
@@ -97,6 +98,7 @@
       .timer {
         font-size: 2rem;
         padding: 20px 30px;
+        margin-top: 30px;
       }
     }
 
@@ -107,6 +109,7 @@
       .timer {
         font-size: 1.5rem;
         padding: 15px 20px;
+        margin-top: 20px;
       }
     }
   </style>
