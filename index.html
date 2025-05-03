@@ -92,9 +92,10 @@
       100% { opacity: 1; transform: scale(1); }
     }
 
+    /* Zmiana pozycji logo na urządzeniach mobilnych */
     @media screen and (max-width: 768px) {
       .logo {
-        top: -150px;
+        top: -120px; /* Podniesienie logo na urządzeniach mobilnych */
         width: 80%;
       }
 
@@ -105,9 +106,10 @@
       }
     }
 
+    /* Zmiana pozycji logo na jeszcze mniejszych ekranach */
     @media screen and (max-width: 480px) {
       .logo {
-        top: -120px;
+        top: -100px; /* Jeszcze wyższe logo na małych ekranach */
         width: 90%;
       }
 
