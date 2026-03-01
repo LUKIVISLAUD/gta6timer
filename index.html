@@ -72,12 +72,13 @@
             display: flex; align-items: center; gap: 20px; 
             transform: translateX(-100px); 
             padding: 10px 18px; border-radius: 50px; 
+            transform-origin: top left;
         }
         .logo-link { transition: transform 0.3s ease; display: flex; align-items: center; text-decoration: none; }
         .logo-link:hover { transform: scale(1.15); filter: drop-shadow(0 0 10px var(--gta-pink)); }
 
         /* --- TIMER --- */
-        #ui-main { position: absolute; left: 50%; bottom: 12%; transform: translate(-50%, 80px); display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 650px; }
+        #ui-main { position: absolute; left: 50%; bottom: 12%; transform: translate(-50%, 80px); display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 650px; transform-origin: bottom center; }
         #ui-main.show-element { transform: translate(-50%, 0) !important; }
 
         .timer-container { 
@@ -126,6 +127,7 @@
             font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; cursor: pointer; 
             display: flex !important; align-items: center; gap: 10px; 
             transition: all 0.3s ease, opacity 2.5s, transform 2.5s cubic-bezier(0.2, 1, 0.2, 1); z-index: 100;
+            transform-origin: bottom right;
         }
         #install-btn:hover { transform: scale(0.8) !important; background: rgba(255, 255, 255, 0.2) !important; }
         #install-btn.show-element { transform: translateX(0) scale(0.75) !important; opacity: 1 !important; }
@@ -139,6 +141,13 @@
             .num { font-size: 2.9rem !important; } 
             .progress-section { width: 85% !important; } 
             #install-btn { bottom: 8px; right: 8px; transform: scale(0.75) !important; }
+        }
+
+        /* --- DUŻE MONITORY (2K, 4K) - Powiększenie o 25% --- */
+        @media (min-width: 2000px) {
+            #ui-logos { transform: translateX(0) scale(1.25) !important; top: 30px; left: 30px; }
+            #ui-main.show-element { transform: translate(-50%, 0) scale(1.25) !important; bottom: 15%; }
+            #install-btn.show-element { transform: translateX(0) scale(1) !important; bottom: 25px; right: 25px; }
         }
     </style>
 </head>
@@ -341,7 +350,6 @@
         if (tStart - tEnd > 50) changeView(Math.min(4, currentView + 1));
     });
 
-    // DODANO: Rejestracja Service Workera dla poprawnej instalacji PWA
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js');
