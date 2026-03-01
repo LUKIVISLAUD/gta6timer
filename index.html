@@ -73,6 +73,8 @@
             transform: translateX(-100px); 
             padding: 10px 18px; border-radius: 50px; 
             transform-origin: top left;
+            /* DODANO transición dla płynnego wlotu logo */
+            transition: opacity 2.5s ease, transform 2.5s cubic-bezier(0.2, 1, 0.2, 1);
         }
         .logo-link { transition: transform 0.3s ease; display: flex; align-items: center; text-decoration: none; }
         .logo-link:hover { transform: scale(1.15); filter: drop-shadow(0 0 10px var(--gta-pink)); }
@@ -145,7 +147,7 @@
 
         /* --- DUŻE MONITORY (2K, 4K) - Powiększenie o 25% --- */
         @media (min-width: 2000px) {
-            #ui-logos { transform: translateX(0) scale(1.25) !important; top: 30px; left: 30px; }
+            #ui-logos.show-element { transform: translateX(0) scale(1.25) !important; top: 30px; left: 30px; }
             #ui-main.show-element { transform: translate(-50%, 0) scale(1.25) !important; bottom: 15%; }
             #install-btn.show-element { transform: translateX(0) scale(1) !important; bottom: 25px; right: 25px; }
         }
