@@ -340,6 +340,13 @@
         if (tEnd - tStart > 50) changeView(Math.max(0, currentView - 1));
         if (tStart - tEnd > 50) changeView(Math.min(4, currentView + 1));
     });
+
+    // DODANO: Rejestracja Service Workera dla poprawnej instalacji PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js');
+        });
+    }
 </script>
 </body>
 </html>
