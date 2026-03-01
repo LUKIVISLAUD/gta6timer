@@ -1,0 +1,15 @@
+{
+  "name": "GTA 6 Countdown",
+  "short_name": "GTA VI",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ff00ff",
+  "icons": [
+    {
+      "src": "https://gta-6-countdown.gengamer.in/wp-content/uploads/gta-6-icon.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    }
+  ]
+}
