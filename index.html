@@ -1,159 +1,345 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GTA 6 Countdown</title>
-  
-  <!-- Favicon i Ikony -->
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
-  
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="icon" sizes="192x192" href="android-chrome-192x192.png">
-  <link rel="icon" sizes="512x512" href="android-chrome-512x512.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>GTA VI | Countdown</title>
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Arial', sans-serif;
-      overflow: hidden;
-      background-color: black;
-    }
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#ff41a6">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="theme-color" content="#000000">
 
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      text-shadow: 2px 2px 8px #000;
-      position: relative;
-      background: url('gta-6-official-artwork-no-logo-1600.jpg') no-repeat center center/cover;
-      background-size: cover;
-      height: 100vh;
-      animation: zoomOut 5s ease-out forwards;
-    }
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-    @keyframes zoomOut {
-      0% { transform: scale(1.3); }
-      100% { transform: scale(1); }
-    }
+    <style>
+        :root { 
+            --gta-pink: #ff41a6; 
+            --gta-purple: #6a4cff;
+            /* ZMIENIONO: Nieco ciemniejszy i bardziej rozmyty Liquid Glass */
+            --glass-bg: rgba(0, 0, 0, 0.4); 
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-blur: blur(8px); 
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    .logo {
-      position: relative;
-      width: 500px;
-      max-width: 90%;
-      animation: fadeInLogo 5s ease-in-out forwards;
-      opacity: 0;
-    }
+        body, html { 
+            margin: 0; padding: 0; height: 100%; width: 100%; 
+            background-color: #000; overflow: hidden; 
+            font-family: 'Roboto', sans-serif; color: white; 
+        }
 
-    @keyframes fadeInLogo {
-      0% { opacity: 0; transform: scale(0.6); }
-      100% { opacity: 1; transform: scale(1); }
-    }
+        /* --- LOADER --- */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center;
+            transition: opacity 1.2s ease, visibility 1.2s;
+        }
+        .loader-content { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .loader-logo { width: 120px; filter: drop-shadow(0 0 15px var(--gta-pink)); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
 
-    /* Dostosowanie pozycji logo na podstawie rozdzielczości */
-    .logo {
-      top: -270px; /* domyślnie dla 1920x1080 */
-    }
+        /* --- TŁA --- */
+        .bg-layer { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background-position: center top 30%; background-size: cover; 
+            z-index: 1; transition: opacity 2s ease-in-out; background-color: #000; 
+        }
+        .overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            /* Delikatny gradient dla soczystych kolorów zdjęć */
+            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%); 
+            z-index: 2; 
+        }
+        
+        .anim-element { opacity: 0; z-index: 10; transition: opacity 2.5s ease, transform 2.5s cubic-bezier(0.2, 1, 0.2, 1); }
+        .show-element { opacity: 1 !important; transform: translate(0, 0) !important; }
 
-    @media screen and (min-width: 2560px) {
-      .logo {
-        top: -400px;
-      }
-    }
+        .liquid-glass {
+            background: var(--glass-bg) !important;
+            backdrop-filter: var(--glass-blur) !important;
+            -webkit-backdrop-filter: var(--glass-blur) !important;
+            border: 1px solid var(--glass-border) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+        }
 
-    @media screen and (min-width: 3840px) {
-      .logo {
-        top: -500px;
-      }
-    }
+        /* --- LOGOTYPY --- */
+        #ui-logos { 
+            position: absolute; top: 15px; left: 15px; 
+            display: flex; align-items: center; gap: 20px; 
+            transform: translateX(-100px); 
+            padding: 10px 18px; border-radius: 50px; 
+        }
+        .logo-link { transition: transform 0.3s ease; display: flex; align-items: center; text-decoration: none; }
+        .logo-link:hover { transform: scale(1.15); filter: drop-shadow(0 0 10px var(--gta-pink)); }
 
-    .timer {
-      font-size: 3rem;
-      margin-top: 50px;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 30px 50px;
-      border-radius: 15px;
-      animation: fadeInTimer 5s ease-in-out forwards;
-      opacity: 0;
-      color: #fff;
-      text-shadow: 0 0 8px rgba(138, 43, 226, 0.8), 0 0 15px rgba(138, 43, 226, 0.6);
-      box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
-    }
+        /* --- TIMER --- */
+        #ui-main { position: absolute; left: 50%; bottom: 12%; transform: translate(-50%, 80px); display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 650px; }
+        #ui-main.show-element { transform: translate(-50%, 0) !important; }
 
-    @keyframes fadeInTimer {
-      0% { opacity: 0; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1); }
-    }
+        .timer-container { 
+            padding: 25px 50px; border-radius: 25px; 
+            display: flex; gap: 30px; margin-bottom: 12px; min-height: 120px; 
+            justify-content: center; align-items: center;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .unit { display: flex; flex-direction: column; align-items: center; min-width: 70px; }
+        .num { 
+            font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; line-height: 1;
+            background-image: linear-gradient(to bottom, #6a4cff, #ff41a6, #ff9966, #ffcc33);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+            display: inline-block;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+        }
+        .pulse-num { animation: tick 0.25s ease-out; }
+        @keyframes tick { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+        .label { font-size: 1rem; color: #ffffff; font-weight: 700; margin-top: 8px; text-shadow: 2px 2px 6px rgba(0, 0, 0, 1); }
 
-    /* Zmiana pozycji logo na urządzeniach mobilnych */
-    @media screen and (max-width: 768px) {
-      .logo {
-        top: -180px; /* Podniesienie logo na urządzeniach mobilnych */
-        width: 80%;
-      }
+        .dots-container { display: flex; gap: 12px; margin-bottom: 12px; padding: 8px 16px; border-radius: 50px; }
+        .dot { width: 10px; height: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 50%; cursor: pointer; transition: 0.3s; }
+        .dot.active { background: #ff41a6; box-shadow: 0 0 10px #ff41a6; transform: scale(1.3); }
 
-      .timer {
-        font-size: 2rem;
-        margin-top: 20px;
-        padding: 20px 30px;
-      }
-    }
+        /* --- PROGRES --- */
+        .progress-section { width: 90%; max-width: 475px; padding: 15px 30px; border-radius: 35px; } 
+        .progress-container { width: 100%; height: 8px; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden; margin-bottom: 5px; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #6a4cff, #ff41a6, #ffcc33); transition: width 3s cubic-bezier(0.1, 0.5, 0.1, 1); }
+        
+        .progress-labels { display: flex; justify-content: center; align-items: flex-start; width: 100%; margin-top: 2px; }
+        .date-box { 
+            font-size: 0.65rem; color: #fff; font-weight: bold; text-transform: uppercase; 
+            letter-spacing: 1px; line-height: 1.2; flex: 1;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
+        }
+        #percent { 
+            font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: #ffffff; 
+            letter-spacing: 1px; text-align: center; margin-top: -2px; width: 80px; flex-shrink: 0;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
+        }
 
-    /* Zmiana pozycji logo na jeszcze mniejszych ekranach */
-    @media screen and (max-width: 480px) {
-      .logo {
-        top: -160px; /* Jeszcze wyższe logo na małych ekranach */
-        width: 90%;
-      }
+        /* --- INSTALACJA --- */
+        #install-btn { 
+            position: fixed; bottom: 12px; right: 12px; transform: translateX(150px) scale(0.75);
+            opacity: 0; color: white; border: none; padding: 10px 20px; border-radius: 40px; 
+            font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; cursor: pointer; 
+            display: flex !important; align-items: center; gap: 10px; 
+            transition: all 0.3s ease, opacity 2.5s, transform 2.5s cubic-bezier(0.2, 1, 0.2, 1); z-index: 100;
+        }
+        #install-btn:hover { transform: scale(0.8) !important; background: rgba(255, 255, 255, 0.2) !important; }
+        #install-btn.show-element { transform: translateX(0) scale(0.75) !important; opacity: 1 !important; }
 
-      .timer {
-        font-size: 1.5rem;
-        margin-top: 10px;
-        padding: 15px 20px;
-      }
-    }
-  </style>
+        /* --- MOBILNE --- */
+        @media (max-width: 600px) {
+            body, html { position: fixed; overflow: hidden; touch-action: none; }
+            #ui-main { width: 100% !important; bottom: 15% !important; }
+            .timer-container { width: 98% !important; padding: 15px 2px !important; gap: 2px !important; min-height: 110px; }
+            .unit { min-width: 24%; }
+            .num { font-size: 2.9rem !important; } 
+            .progress-section { width: 85% !important; } 
+            #install-btn { bottom: 8px; right: 8px; transform: scale(0.75) !important; }
+        }
+    </style>
 </head>
 <body>
 
-  <img src="gta-6-logo-official-artwork-1600.jpg" alt="GTA 6 Logo" class="logo">
+    <div id="loader">
+        <div class="loader-content">
+            <img src="https://gta-6-countdown.gengamer.in/wp-content/uploads/gta-6-icon.webp" class="loader-logo">
+            <p id="loader-text" style="font-family: 'Bebas Neue'; letter-spacing: 4px; margin-top: 15px;">ŁADOWANIE...</p>
+        </div>
+    </div>
 
-  <div class="timer" id="countdown">
-    Odliczanie...
-  </div>
+    <div id="bg1" class="bg-layer" style="opacity: 1;"></div>
+    <div id="bg2" class="bg-layer" style="opacity: 0;"></div>
+    <div class="overlay"></div>
 
-  <script>
-    const countdownElement = document.getElementById('countdown');
-    const targetDate = new Date("2026-11-19T00:00:00");
+    <div class="logo-section anim-element liquid-glass" id="ui-logos">
+        <a href="https://www.rockstargames.com/VI" target="_blank" class="logo-link">
+            <img src="https://gta-6-countdown.gengamer.in/wp-content/uploads/gta-6-icon.webp" style="width:35px">
+        </a>
+        <div style="width:1px; height:15px; background:rgba(255,255,255,0.2)"></div>
+        <a href="https://www.rockstargames.com" target="_blank" class="logo-link">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Rockstar_Games_Logo.svg" style="width:30px">
+        </a>
+    </div>
 
-    function updateCountdown() {
-      const now = new Date();
-      const diff = targetDate - now;
+    <div class="main-ui anim-element" id="ui-main">
+        <div class="timer-container liquid-glass" id="timer-box"></div>
+        <div class="dots-container liquid-glass">
+            <div class="dot active" onclick="changeView(0)"></div>
+            <div class="dot" onclick="changeView(1)"></div>
+            <div class="dot" onclick="changeView(2)"></div>
+            <div class="dot" onclick="changeView(3)"></div>
+            <div class="dot" onclick="changeView(4)"></div>
+        </div>
+        
+        <div class="progress-section liquid-glass">
+            <div class="progress-container"><div id="bar" class="progress-fill"></div></div>
+            <div class="progress-labels">
+                <div class="date-box" id="label-start"></div>
+                <div id="percent">0,00%</div>
+                <div class="date-box" id="label-end" style="text-align: right;"></div>
+            </div>
+        </div>
+    </div>
 
-      if (diff <= 0) {
-        countdownElement.innerHTML = "GTA 6 JUŻ JEST!";
-        return;
-      }
+    <button id="install-btn" class="anim-element liquid-glass">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        <span id="install-txt">ZAINSTALUJ</span>
+    </button>
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
+<script>
+    const translations = {
+        pl: {
+            loading: "ŁADOWANIE...", install: "ZAINSTALUJ",
+            days: "Dni", hours: "Godz.", mins: "Min.", secs: "Sek.",
+            weeks_label: "Tygodni", hours_label: "Godzin", mins_label: "Minut", secs_label: "Sekund",
+            trailer: "PIERWSZY ZWIASTUN", premiere: "OFICJALNA PREMIERA",
+            dateStart: "5 Grudnia, 2023", dateEnd: "19 Listopada, 2026"
+        },
+        en: {
+            loading: "LOADING...", install: "INSTALL",
+            days: "Days", hours: "Hrs.", mins: "Min.", secs: "Sec.",
+            weeks_label: "Weeks", hours_label: "Hours", mins_label: "Minutes", secs_label: "Seconds",
+            trailer: "FIRST TRAILER", premiere: "OFFICIAL PREMIERE",
+            dateStart: "5 Dec, 2023", dateEnd: "Nov 19, 2026"
+        }
+    };
 
-      countdownElement.innerHTML = `${days} dni ${hours}h ${minutes}min ${seconds}s`;
+    const userLang = navigator.language.startsWith('pl') ? 'pl' : 'en';
+    const T = translations[userLang];
+
+    function applyLanguage() {
+        document.getElementById('loader-text').innerText = T.loading;
+        document.getElementById('install-txt').innerText = T.install;
+        document.getElementById('label-start').innerHTML = `${T.dateStart}<br><small style="color:var(--gta-pink)">${T.trailer}</small>`;
+        document.getElementById('label-end').innerHTML = `${T.dateEnd}<br><small style="color:var(--gta-pink)">${T.premiere}</small>`;
+    }
+    applyLanguage();
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+
+    document.getElementById('install-btn').addEventListener('click', async () => {
+        if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; } 
+        else { alert(userLang === 'pl' ? "Użyj menu przeglądarki, aby zainstalować aplikację." : "Use browser menu to install the app."); }
+    });
+
+    const allBackgrounds = ['tlo1.jpg', 'tlo2.jpg', 'tlo3.jpg', 'tlo4.jpg', 'tlo5.jpg', 'tlo6.jpg', 'tlo7.jpg', 'tlo8.jpg', 'tlo9.jpg', 'tlo10.jpg', 'tlo11.jpg'];
+    let shuffledBgs = [];
+    let bgIndex = 0;
+
+    function shuffle(array) {
+        let arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
     }
 
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-  </script>
+    function getNextBg() {
+        if (bgIndex >= shuffledBgs.length) { shuffledBgs = shuffle(allBackgrounds); bgIndex = 0; }
+        return shuffledBgs[bgIndex++];
+    }
 
+    shuffledBgs = shuffle(allBackgrounds);
+    document.getElementById('bg1').style.backgroundImage = `url('${getNextBg()}')`;
+
+    setInterval(() => {
+        const bg1 = document.getElementById('bg1');
+        const bg2 = document.getElementById('bg2');
+        const nextImg = getNextBg();
+        if (bg1.style.opacity == '1') { bg2.style.backgroundImage = `url('${nextImg}')`; bg1.style.opacity = '0'; bg2.style.opacity = '1'; } 
+        else { bg1.style.backgroundImage = `url('${nextImg}')`; bg2.style.opacity = '0'; bg1.style.opacity = '1'; }
+    }, 8000);
+
+    const targetDate = new Date("November 19, 2026 00:00:00").getTime();
+    const startDate = new Date("December 4, 2023 00:00:00").getTime();
+    let currentView = 0;
+    let lastVals = {};
+
+    function buildTimerUI() {
+        const box = document.getElementById('timer-box');
+        if(!box) return;
+        box.style.opacity = '0';
+        box.style.transform = `scale(0.95)`;
+        
+        setTimeout(() => {
+            lastVals = {};
+            if (currentView === 0) {
+                box.innerHTML = `
+                    <div class="unit"><span class="num" id="n-d">---</span><span class="label">${T.days}</span></div>
+                    <div class="unit"><span class="num" id="n-h">--</span><span class="label">${T.hours}</span></div>
+                    <div class="unit"><span class="num" id="n-m">--</span><span class="label">${T.mins}</span></div>
+                    <div class="unit"><span class="num" id="n-s">--</span><span class="label">${T.secs}</span></div>
+                `;
+            } else {
+                const labels = [null, T.weeks_label, T.hours_label, T.mins_label, T.secs_label];
+                box.innerHTML = `<div class="unit" style="min-width:220px"><span class="num" id="n-single">---</span><span class="label">${labels[currentView]}</span></div>`;
+            }
+            update();
+            box.style.opacity = '1';
+            box.style.transform = 'scale(1)';
+        }, 50);
+    }
+
+    function update() {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+        const progress = ((now - startDate) / (targetDate - startDate)) * 100;
+        const pEl = document.getElementById('percent');
+        const bEl = document.getElementById('bar');
+        if(pEl) pEl.innerText = Math.min(progress, 100).toFixed(2).replace('.', ',') + "%";
+        if(bEl) bEl.style.width = Math.min(progress, 100) + "%";
+        const updateVal = (id, newVal) => {
+            const el = document.getElementById(id);
+            if(el && lastVals[id] !== newVal) {
+                el.innerText = newVal;
+                el.classList.add('pulse-num');
+                setTimeout(() => el.classList.remove('pulse-num'), 250);
+                lastVals[id] = newVal;
+            }
+        };
+        if (currentView === 0) {
+            updateVal('n-d', Math.max(0, Math.floor(diff / 86400000)).toString().padStart(3, '0'));
+            updateVal('n-h', Math.max(0, Math.floor((diff % 86400000) / 3600000)).toString().padStart(2, '0'));
+            updateVal('n-m', Math.max(0, Math.floor((diff % 3600000) / 60000)).toString().padStart(2, '0'));
+            updateVal('n-s', Math.max(0, Math.floor((diff % 60000) / 1000)).toString().padStart(2, '0'));
+        } else {
+            let val = [0, 604800000, 3600000, 60000, 1000][currentView];
+            updateVal('n-single', Math.max(0, Math.floor(diff / val)).toLocaleString());
+        }
+    }
+
+    function changeView(v) { 
+        if (v === currentView) return;
+        currentView = v; 
+        document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === v)); 
+        buildTimerUI(); 
+    }
+
+    function initSite() {
+        document.getElementById('loader').style.opacity = '0';
+        setTimeout(() => { 
+            document.getElementById('loader').style.visibility = 'hidden'; 
+            document.querySelectorAll('.anim-element').forEach(el => el.classList.add('show-element'));
+        }, 1200);
+    }
+
+    window.addEventListener('load', () => { setTimeout(initSite, 1500); });
+    buildTimerUI();
+    setInterval(update, 100);
+
+    let tStart = 0;
+    document.addEventListener('touchstart', e => tStart = e.changedTouches[0].screenX, {passive: true});
+    document.addEventListener('touchend', e => {
+        let tEnd = e.changedTouches[0].screenX;
+        if (tEnd - tStart > 50) changeView(Math.max(0, currentView - 1));
+        if (tStart - tEnd > 50) changeView(Math.min(4, currentView + 1));
+    });
+</script>
 </body>
 </html>
-
