@@ -19,7 +19,6 @@
         :root { 
             --gta-pink: #ff41a6; 
             --gta-purple: #6a4cff;
-            /* ZMIENIONO: Nieco ciemniejszy i bardziej rozmyty Liquid Glass */
             --glass-bg: rgba(0, 0, 0, 0.4); 
             --glass-border: rgba(255, 255, 255, 0.15);
             --glass-blur: blur(8px); 
@@ -50,7 +49,6 @@
         }
         .overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            /* Delikatny gradient dla soczystych kolorów zdjęć */
             background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%); 
             z-index: 2; 
         }
@@ -73,7 +71,6 @@
             transform: translateX(-100px); 
             padding: 10px 18px; border-radius: 50px; 
             transform-origin: top left;
-            /* DODANO transición dla płynnego wlotu logo */
             transition: opacity 2.5s ease, transform 2.5s cubic-bezier(0.2, 1, 0.2, 1);
         }
         .logo-link { transition: transform 0.3s ease; display: flex; align-items: center; text-decoration: none; }
@@ -84,6 +81,7 @@
         #ui-main.show-element { transform: translate(-50%, 0) !important; }
 
         .timer-container { 
+            width: 90%; max-width: 475px; 
             padding: 25px 50px; border-radius: 25px; 
             display: flex; gap: 30px; margin-bottom: 12px; min-height: 120px; 
             justify-content: center; align-items: center;
@@ -108,7 +106,7 @@
         /* --- PROGRES --- */
         .progress-section { width: 90%; max-width: 475px; padding: 15px 30px; border-radius: 35px; } 
         .progress-container { width: 100%; height: 8px; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden; margin-bottom: 5px; }
-        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #6a4cff, #ff41a6, #ffcc33); transition: width 3s cubic-bezier(0.1, 0.5, 0.1, 1); }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #6a4cff, #ff41a6, #ffcc33); will-change: width; } 
         
         .progress-labels { display: flex; justify-content: center; align-items: flex-start; width: 100%; margin-top: 2px; }
         .date-box { 
@@ -120,6 +118,7 @@
             font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: #ffffff; 
             letter-spacing: 1px; text-align: center; margin-top: -2px; width: 80px; flex-shrink: 0;
             text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
+            transform: translateY(0px);
         }
 
         /* --- INSTALACJA --- */
@@ -145,7 +144,7 @@
             #install-btn { bottom: 8px; right: 8px; transform: scale(0.75) !important; }
         }
 
-        /* --- DUŻE MONITORY (2K, 4K) - Powiększenie o 25% --- */
+        /* --- DUŻE MONITORY --- */
         @media (min-width: 2000px) {
             #ui-logos.show-element { transform: translateX(0) scale(1.25) !important; top: 30px; left: 30px; }
             #ui-main.show-element { transform: translate(-50%, 0) scale(1.25) !important; bottom: 15%; }
@@ -184,6 +183,7 @@
             <div class="dot" onclick="changeView(2)"></div>
             <div class="dot" onclick="changeView(3)"></div>
             <div class="dot" onclick="changeView(4)"></div>
+            <div class="dot" onclick="changeView(5)"></div>
         </div>
         
         <div class="progress-section liquid-glass">
@@ -206,14 +206,14 @@
         pl: {
             loading: "ŁADOWANIE...", install: "ZAINSTALUJ",
             days: "Dni", hours: "Godz.", mins: "Min.", secs: "Sek.",
-            weeks_label: "Tygodni", hours_label: "Godzin", mins_label: "Minut", secs_label: "Sekund",
+            months_label: "Miesięcy", weeks_label: "Tygodni", hours_label: "Godzin", mins_label: "Minut", secs_label: "Sekund",
             trailer: "PIERWSZY ZWIASTUN", premiere: "OFICJALNA PREMIERA",
             dateStart: "5 Grudnia, 2023", dateEnd: "19 Listopada, 2026"
         },
         en: {
             loading: "LOADING...", install: "INSTALL",
             days: "Days", hours: "Hrs.", mins: "Min.", secs: "Sec.",
-            weeks_label: "Weeks", hours_label: "Hours", mins_label: "Minutes", secs_label: "Seconds",
+            months_label: "Months", weeks_label: "Weeks", hours_label: "Hours", mins_label: "Minutes", secs_label: "Seconds",
             trailer: "FIRST TRAILER", premiere: "OFFICIAL PREMIERE",
             dateStart: "5 Dec, 2023", dateEnd: "Nov 19, 2026"
         }
@@ -271,6 +271,9 @@
     const startDate = new Date("December 4, 2023 00:00:00").getTime();
     let currentView = 0;
     let lastVals = {};
+    
+    let showProgress = false;
+    let animatedPercent = 0;
 
     function buildTimerUI() {
         const box = document.getElementById('timer-box');
@@ -288,23 +291,34 @@
                     <div class="unit"><span class="num" id="n-s">--</span><span class="label">${T.secs}</span></div>
                 `;
             } else {
-                const labels = [null, T.weeks_label, T.hours_label, T.mins_label, T.secs_label];
+                const labels = [null, T.months_label, T.weeks_label, T.hours_label, T.mins_label, T.secs_label];
                 box.innerHTML = `<div class="unit" style="min-width:220px"><span class="num" id="n-single">---</span><span class="label">${labels[currentView]}</span></div>`;
             }
-            update();
+            updateCore();
             box.style.opacity = '1';
             box.style.transform = 'scale(1)';
         }, 50);
     }
 
-    function update() {
+    function animate() {
+        updateCore();
+        requestAnimationFrame(animate);
+    }
+
+    function updateCore() {
         const now = new Date().getTime();
         const diff = targetDate - now;
-        const progress = ((now - startDate) / (targetDate - startDate)) * 100;
+        const targetProgress = ((now - startDate) / (targetDate - startDate)) * 100;
         const pEl = document.getElementById('percent');
         const bEl = document.getElementById('bar');
-        if(pEl) pEl.innerText = Math.min(progress, 100).toFixed(2).replace('.', ',') + "%";
-        if(bEl) bEl.style.width = Math.min(progress, 100) + "%";
+        
+        if (showProgress) {
+            animatedPercent += (targetProgress - animatedPercent) * 0.008; 
+            let displayVal = Math.min(animatedPercent, 100);
+            if(pEl) pEl.innerText = displayVal.toFixed(2).replace('.', ',') + "%";
+            if(bEl) bEl.style.width = displayVal + "%";
+        }
+        
         const updateVal = (id, newVal) => {
             const el = document.getElementById(id);
             if(el && lastVals[id] !== newVal) {
@@ -314,13 +328,14 @@
                 lastVals[id] = newVal;
             }
         };
+
         if (currentView === 0) {
             updateVal('n-d', Math.max(0, Math.floor(diff / 86400000)).toString().padStart(3, '0'));
             updateVal('n-h', Math.max(0, Math.floor((diff % 86400000) / 3600000)).toString().padStart(2, '0'));
             updateVal('n-m', Math.max(0, Math.floor((diff % 3600000) / 60000)).toString().padStart(2, '0'));
             updateVal('n-s', Math.max(0, Math.floor((diff % 60000) / 1000)).toString().padStart(2, '0'));
         } else {
-            let val = [0, 604800000, 3600000, 60000, 1000][currentView];
+            let val = [0, 2629746000, 604800000, 3600000, 60000, 1000][currentView];
             updateVal('n-single', Math.max(0, Math.floor(diff / val)).toLocaleString());
         }
     }
@@ -337,19 +352,20 @@
         setTimeout(() => { 
             document.getElementById('loader').style.visibility = 'hidden'; 
             document.querySelectorAll('.anim-element').forEach(el => el.classList.add('show-element'));
+            setTimeout(() => { showProgress = true; }, 500);
         }, 1200);
     }
 
     window.addEventListener('load', () => { setTimeout(initSite, 1500); });
     buildTimerUI();
-    setInterval(update, 100);
+    requestAnimationFrame(animate);
 
     let tStart = 0;
     document.addEventListener('touchstart', e => tStart = e.changedTouches[0].screenX, {passive: true});
     document.addEventListener('touchend', e => {
         let tEnd = e.changedTouches[0].screenX;
         if (tEnd - tStart > 50) changeView(Math.max(0, currentView - 1));
-        if (tStart - tEnd > 50) changeView(Math.min(4, currentView + 1));
+        if (tStart - tEnd > 50) changeView(Math.min(5, currentView + 1));
     });
 
     if ('serviceWorker' in navigator) {
