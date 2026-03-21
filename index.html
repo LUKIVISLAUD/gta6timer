@@ -315,7 +315,11 @@
         if (showProgress) {
             animatedPercent += (targetProgress - animatedPercent) * 0.008; 
             let displayVal = Math.min(animatedPercent, 100);
-            if(pEl) pEl.innerText = displayVal.toFixed(2).replace('.', ',') + "%";
+            
+            // Tutaj ucinamy zamiast zaokrąglać
+            let cutPercent = (Math.floor(displayVal * 100) / 100).toFixed(2).replace('.', ',');
+            
+            if(pEl) pEl.innerText = cutPercent + "%";
             if(bEl) bEl.style.width = displayVal + "%";
         }
         
@@ -330,7 +334,7 @@
         };
 
         if (currentView === 0) {
-            updateVal('n-d', Math.max(0, Math.floor(diff / 86400000)).toString().padStart(3, '0'));
+            updateVal('n-d', Math.max(0, Math.floor(diff / 86400000)).toString().padStart(2, '0'));
             updateVal('n-h', Math.max(0, Math.floor((diff % 86400000) / 3600000)).toString().padStart(2, '0'));
             updateVal('n-m', Math.max(0, Math.floor((diff % 3600000) / 60000)).toString().padStart(2, '0'));
             updateVal('n-s', Math.max(0, Math.floor((diff % 60000) / 1000)).toString().padStart(2, '0'));
