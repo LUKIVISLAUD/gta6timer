@@ -88,15 +88,23 @@
             transition: opacity 0.2s ease, transform 0.2s ease;
         }
         .unit { display: flex; flex-direction: column; align-items: center; min-width: 70px; }
-        .num { 
+        
+        /* Zmiana na flex dla kontenera liczby */
+        .num { display: flex; justify-content: center; align-items: center; gap: 1px; }
+        
+        /* Styl tekstu przeniesiony do nowej klasy .digit */
+        .digit { 
             font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; line-height: 1;
             background-image: linear-gradient(to bottom, #6a4cff, #ff41a6, #ff9966, #ffcc33);
             -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
             display: inline-block;
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+            will-change: transform;
         }
+        
         .pulse-num { animation: tick 0.25s ease-out; }
         @keyframes tick { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+        
         .label { font-size: 1rem; color: #ffffff; font-weight: 700; margin-top: 8px; text-shadow: 2px 2px 6px rgba(0, 0, 0, 1); }
 
         .dots-container { display: flex; gap: 12px; margin-bottom: 12px; padding: 8px 16px; border-radius: 50px; }
@@ -139,7 +147,7 @@
             #ui-main { width: 100% !important; bottom: 15% !important; }
             .timer-container { width: 98% !important; padding: 15px 2px !important; gap: 2px !important; min-height: 110px; }
             .unit { min-width: 24%; }
-            .num { font-size: 2.9rem !important; } 
+            .digit { font-size: 2.9rem !important; } /* Zmienione z .num na .digit dla mobilnych */
             .progress-section { width: 85% !important; } 
             #install-btn { bottom: 8px; right: 8px; transform: scale(0.75) !important; }
         }
@@ -205,15 +213,15 @@
     const translations = {
         pl: {
             loading: "ŁADOWANIE...", install: "ZAINSTALUJ",
-            days: "Dni", hours: "Godz.", mins: "Min.", secs: "Sek.",
-            months_label: "Miesięcy", weeks_label: "Tygodni", hours_label: "Godzin", mins_label: "Minut", secs_label: "Sekund",
+            days: "DNI", hours: "GODZINY", mins: "MINUTY", secs: "SEKUNDY",
+            months_label: "MIESIĘCY", weeks_label: "TYGODNI", hours_label: "GODZIN", mins_label: "MINUT", secs_label: "SEKUND",
             trailer: "PIERWSZY ZWIASTUN", premiere: "OFICJALNA PREMIERA",
             dateStart: "5 Grudnia, 2023", dateEnd: "19 Listopada, 2026"
         },
         en: {
             loading: "LOADING...", install: "INSTALL",
-            days: "Days", hours: "Hrs.", mins: "Min.", secs: "Sec.",
-            months_label: "Months", weeks_label: "Weeks", hours_label: "Hours", mins_label: "Minutes", secs_label: "Seconds",
+            days: "DAYS", hours: "HOURS", mins: "MINUTES", secs: "SECONDS",
+            months_label: "MONTHS", weeks_label: "WEEKS", hours_label: "HOURS", mins_label: "MINUTES", secs_label: "SECONDS",
             trailer: "FIRST TRAILER", premiere: "OFFICIAL PREMIERE",
             dateStart: "5 Dec, 2023", dateEnd: "Nov 19, 2026"
         }
@@ -284,15 +292,16 @@
         setTimeout(() => {
             lastVals = {};
             if (currentView === 0) {
+                // Zmieniono tylko span na div w klasie .num, żeby działało flexbox dla cyfr
                 box.innerHTML = `
-                    <div class="unit"><span class="num" id="n-d">---</span><span class="label">${T.days}</span></div>
-                    <div class="unit"><span class="num" id="n-h">--</span><span class="label">${T.hours}</span></div>
-                    <div class="unit"><span class="num" id="n-m">--</span><span class="label">${T.mins}</span></div>
-                    <div class="unit"><span class="num" id="n-s">--</span><span class="label">${T.secs}</span></div>
+                    <div class="unit"><div class="num" id="n-d"></div><span class="label">${T.days}</span></div>
+                    <div class="unit"><div class="num" id="n-h"></div><span class="label">${T.hours}</span></div>
+                    <div class="unit"><div class="num" id="n-m"></div><span class="label">${T.mins}</span></div>
+                    <div class="unit"><div class="num" id="n-s"></div><span class="label">${T.secs}</span></div>
                 `;
             } else {
                 const labels = [null, T.months_label, T.weeks_label, T.hours_label, T.mins_label, T.secs_label];
-                box.innerHTML = `<div class="unit" style="min-width:220px"><span class="num" id="n-single">---</span><span class="label">${labels[currentView]}</span></div>`;
+                box.innerHTML = `<div class="unit" style="min-width:220px"><div class="num" id="n-single"></div><span class="label">${labels[currentView]}</span></div>`;
             }
             updateCore();
             box.style.opacity = '1';
@@ -313,7 +322,7 @@
         const bEl = document.getElementById('bar');
         
         if (showProgress) {
-            animatedPercent += (targetProgress - animatedPercent) * 0.008; 
+            animatedPercent += (targetProgress - animatedPercent) * 0.012; 
             let displayVal = Math.min(animatedPercent, 100);
             
             // Tutaj ucinamy zamiast zaokrąglać
@@ -323,13 +332,29 @@
             if(bEl) bEl.style.width = displayVal + "%";
         }
         
+        // NOWA LOGIKA PULSOWANIA Z ROZBIJANIEM NA SPANY
         const updateVal = (id, newVal) => {
             const el = document.getElementById(id);
-            if(el && lastVals[id] !== newVal) {
-                el.innerText = newVal;
-                el.classList.add('pulse-num');
-                setTimeout(() => el.classList.remove('pulse-num'), 250);
-                lastVals[id] = newVal;
+            if(!el) return;
+            const newValStr = newVal.toString();
+            const oldValStr = lastVals[id] || "";
+
+            if(oldValStr !== newValStr) {
+                if (el.children.length !== newValStr.length) {
+                    el.innerHTML = newValStr.split('').map(c => `<span class="digit">${c}</span>`).join('');
+                } else {
+                    const paddedOld = oldValStr.padStart(newValStr.length, ' ');
+                    for(let i = 0; i < newValStr.length; i++) {
+                        if (newValStr[i] !== paddedOld[i]) {
+                            const digitSpan = el.children[i];
+                            digitSpan.innerText = newValStr[i];
+                            digitSpan.classList.remove('pulse-num');
+                            void digitSpan.offsetWidth; 
+                            digitSpan.classList.add('pulse-num');
+                        }
+                    }
+                }
+                lastVals[id] = newValStr;
             }
         };
 
