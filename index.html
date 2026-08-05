@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
     <title>GTA VI | Countdown</title>
 
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#ff41a6">
-    <meta name="msapplication-TileColor" content="#000000">
     <meta name="theme-color" content="#000000">
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <meta property="og:title" content="GTA VI | Countdown">
+    <meta property="og:description" content="Sprawdź ile zostało do premiery Grand Theft Auto VI!">
+    <meta property="og:image" content="https://lukivislaud.github.io/dxdd121/HLHD8O8W0AAAsMI.jpg">
+    <meta property="og:type" content="website">
 
     <style>
         :root { 
@@ -164,7 +167,7 @@
 
     <div id="loader">
         <div class="loader-content">
-            <img src="https://gta-6-countdown.gengamer.in/wp-content/uploads/gta-6-icon.webp" class="loader-logo">
+            <img src="gta-6-icon.svg" class="loader-logo">
             <p id="loader-text" style="font-family: 'Bebas Neue'; letter-spacing: 4px; margin-top: 15px;">ŁADOWANIE...</p>
         </div>
     </div>
@@ -175,7 +178,7 @@
 
     <div class="logo-section anim-element liquid-glass" id="ui-logos">
         <a href="https://www.rockstargames.com/VI" target="_blank" class="logo-link">
-            <img src="https://gta-6-countdown.gengamer.in/wp-content/uploads/gta-6-icon.webp" style="width:35px">
+            <img src="gta-6-icon.svg" style="width: 35px;">
         </a>
         <div style="width:1px; height:15px; background:rgba(255,255,255,0.2)"></div>
         <a href="https://www.rockstargames.com" target="_blank" class="logo-link">
@@ -292,7 +295,6 @@
         setTimeout(() => {
             lastVals = {};
             if (currentView === 0) {
-                // Zmieniono tylko span na div w klasie .num, żeby działało flexbox dla cyfr
                 box.innerHTML = `
                     <div class="unit"><div class="num" id="n-d"></div><span class="label">${T.days}</span></div>
                     <div class="unit"><div class="num" id="n-h"></div><span class="label">${T.hours}</span></div>
@@ -325,14 +327,12 @@
             animatedPercent += (targetProgress - animatedPercent) * 0.012; 
             let displayVal = Math.min(animatedPercent, 100);
             
-            // Tutaj ucinamy zamiast zaokrąglać
             let cutPercent = (Math.floor(displayVal * 100) / 100).toFixed(2).replace('.', ',');
             
             if(pEl) pEl.innerText = cutPercent + "%";
             if(bEl) bEl.style.width = displayVal + "%";
         }
         
-        // NOWA LOGIKA PULSOWANIA Z ROZBIJANIEM NA SPANY
         const updateVal = (id, newVal) => {
             const el = document.getElementById(id);
             if(!el) return;
